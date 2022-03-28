@@ -1,0 +1,11 @@
+{
+  "name": "storenshare",
+  "version": "0.0.1",
+  "description": "Productivity app ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hamza ghenimi",
+  "license": "ISC"
+}
