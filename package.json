@@ -4,7 +4,12 @@
   "description": "Productivity app ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install-server-dep": "npm install --prefix server",
+    "build-server": "npm run build --prefix server",
+    "start-server": "npm run start --prefix server",
+    "install": "npm run install-server-dep",
+    "build": "npm run build-server",
+    "start": "npm run start-server"
   },
   "author": "hamza ghenimi",
   "license": "ISC"

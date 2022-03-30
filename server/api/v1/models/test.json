@@ -15,6 +15,7 @@
     "items": ["item", "item", "..."]
   },
   "item": {
-    "key": "value"
+    "key": "key",
+    "value": "value"
   }
 }

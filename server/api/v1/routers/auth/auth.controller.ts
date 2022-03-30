@@ -12,8 +12,8 @@ export class AuthController {
     const data = await Auth.register();
 
     return data.error
-                    ? res.status(400).json({error: true, detail: data.detail})
-                    : res.status(201).json({error: false, detail: data.detail});
+                    ? res.status(400).json({ error: true, detail: data.detail })
+                    : res.status(201).json({ error: false, detail: data.detail });
   };
 
   static async loginController(req: Request, res: Response) {
@@ -22,7 +22,7 @@ export class AuthController {
     const data = await Auth.login();
 
     return data.error
-                    ? res.status(401).json({error: true, detail: data.detail})
-                    : res.status(200).json({error: false, detail: data.detail});
+                    ? res.status(401).json({ error: true, detail: data.detail })
+                    : res.status(200).json({ error: false, detail: data.detail });
   };
 };

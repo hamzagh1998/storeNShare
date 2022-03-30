@@ -1,10 +1,12 @@
-import { HydratedDocument } from "mongoose";
+import { ObjectId } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import Ajv from "ajv";
 
-import { UserModel } from "../models/user.model";
 import { User } from "../interfaces/user.interface";
+import { UserModel } from "../models/user.model";
+import { ClusterModel } from "../models/cluster.model";
+
 import { registerSchema, loginSchema } from "../schema-validator";
 import { logger } from "../logger";
 
@@ -16,7 +18,7 @@ export class AuthService {
   private ajv;
 
   constructor(
-    registerObj: User | null, 
+    registerObj: User<ObjectId> | null, 
     loginObject: {usernameOrEmail: string, password: string} | null
     ) { 
     this.userInfo = registerObj;
@@ -40,15 +42,24 @@ export class AuthService {
       // check if email already exists
       user = await UserModel.findOne({email: email});
       if (user) return { error: true, detail: "This email already exists!" };
+
       // hash password
       const hash = await bcrypt.hash(this.userInfo!.password, 10);
       this.userInfo!.password = hash;
+
+      // create cluster for the new user
+      const clusterDoc = new ClusterModel({
+        name: username + " " + "cluster",
+        shared: true
+      });
+      await clusterDoc.save();
       // save doc
-      const userDoc: HydratedDocument<User> = new UserModel(this.userInfo);
-      userDoc.save();
+      const userDoc = new UserModel({
+        ...this.userInfo, cluster: clusterDoc._id
+      });
+      await userDoc.save();
       // exclude password
-      const { password, ...data } = this.userInfo!;
-      return { error: false, detail: data };
+      return { error: false, detail: "Account created successfully!" };
     }; 
     logger.error(detail);
     return { error: true, detail };
@@ -65,15 +76,16 @@ export class AuthService {
       const user = isEmail 
                         ? await UserModel.findOne({email: usernameOrEmail})
                         : await UserModel.findOne({username: usernameOrEmail});
+                        
       if (user) {
-        const { _id, username, email, avatar } = user;
+        const { _id, username, email, avatar, favorites } = user;
         // check passwords matches
         const match = await bcrypt.compare(password, user.password);
         if (match) {
-          const token = jwt.sign({ _id, username, email, avatar }, process.env.SECRET_KEY!);
+          const token = jwt.sign({ _id, username, email, avatar, favorites }, process.env.SECRET_KEY!);
           return { error: false, detail: token };
         } return { error: true, detail: "Invalid password" };
-      } return { error: true, detail: `This ${isEmail ? 'email' : 'username'} doesn't exists!` };
+      } return { error: true, detail: `This ${isEmail ? "email" : "username"} doesn"t exists!` };
     };
     logger.error(detail);
     return { error: true, detail };
