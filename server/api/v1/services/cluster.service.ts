@@ -29,7 +29,7 @@ export class ClusterService {
     let [err, data] = await tryToCatch((userId: string) => UserModel.findById(userId), _id);
     if (err) {
       logger.error(err);
-      return { error: true, detail: err };
+      return { error: true, detail: "User doesn't exists" };
     };
 
     [err, data] = await tryToCatch((id: string) => (
@@ -59,8 +59,8 @@ export class ClusterService {
     ), this.id);
     if (err) {
       logger.error(err);
-      return { error: true, detail: err };
-    };return { error: false, detail: data.shared ? data : "This cluster is private" };
+      return { error: true, detail: "Cluster doesn't exists!" };
+    };return { error: false, detail: data.shared ? data : "This cluster is private!" };
   };
 
   async createClusterInfo() {
@@ -74,7 +74,7 @@ export class ClusterService {
     [err, data] = await tryToCatch(async (cluster: Cluster<ObjectId>) => {
       // checifcluster name does exists!
       const clusterNameDoesExists = await ClusterModel.find({name: cluster.name});
-      if (clusterNameDoesExists.length) return "Cluster name already exists!"
+      if (clusterNameDoesExists.length) return "Cluster name already exists!";
       // create cluster for the new user
       const clusterDoc = new ClusterModel({...cluster});
       await clusterDoc.save();

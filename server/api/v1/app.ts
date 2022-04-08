@@ -9,6 +9,7 @@ import { AuthRouter } from "./routers/auth/auth.router";
 import { checkToken } from "./middlewares/check-token"
 import { errorCatcher } from "./middlewares/error-catcher";
 import { ClusterRouter } from "./routers/cluster/cluster.router";
+import { CollectionRouter } from "./routers/collection/collection.router";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, "..", "..", "public")));
 // Routes
 app.use("/api/v1/auth", AuthRouter);
 app.use("/api/v1/cluster", checkToken, ClusterRouter);
+app.use("/api/v1/collection", checkToken, CollectionRouter);
 
 // custom middleware
 app.use(errorCatcher);

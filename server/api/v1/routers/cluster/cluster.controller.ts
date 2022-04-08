@@ -34,10 +34,7 @@ export class ClusterController {
   // Get others clusters detail (if it is shared)
   static async clusterDetail(req: Request, res: Response) {
     const token: string = req.body.token;
-    const clusterId: string = req.params.clusterId;
-
-    if (!token) return res.status(403).json({ error: true, detail: 'unauthorized!' });
-    if (!clusterId) return res.status(400).json({ error: true, detail: 'bad request!' });
+    const clusterId: string = req.params.id;
 
     const Cluster = new ClusterService(token, clusterId, null);
     const data = await Cluster.clusterDetailInfo();
@@ -48,7 +45,7 @@ export class ClusterController {
   };
 
   // POST
-  // Update the cluster stats
+  // Update the cluster stats (name, shared)
   static async createCluster(req: Request, res: Response) {
     const token: string = req.body.token;
     const clusterInfo: {name: string, shared: boolean} = req.body.clusterInfo;    
