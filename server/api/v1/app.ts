@@ -10,6 +10,7 @@ import { checkToken } from "./middlewares/check-token"
 import { errorCatcher } from "./middlewares/error-catcher";
 import { ClusterRouter } from "./routers/cluster/cluster.router";
 import { CollectionRouter } from "./routers/collection/collection.router";
+import { ListRouter } from "./routers/list/list.router";
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(express.static(path.join(__dirname, "..", "..", "public")));
 app.use("/api/v1/auth", AuthRouter);
 app.use("/api/v1/cluster", checkToken, ClusterRouter);
 app.use("/api/v1/collection", checkToken, CollectionRouter);
+app.use("/api/v1/list", checkToken, ListRouter);
 
 // custom middleware
 app.use(errorCatcher);

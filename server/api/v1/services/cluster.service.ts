@@ -29,8 +29,9 @@ export class ClusterService {
     let [err, data] = await tryToCatch((userId: string) => UserModel.findById(userId), _id);
     if (err) {
       logger.error(err);
-      return { error: true, detail: "User doesn't exists" };
+      return { error: true, detail: err };
     };
+    if (!data) return { error: true, detail: "Unkown user!" };
 
     [err, data] = await tryToCatch((id: string) => (
       ClusterModel.findById(id)
@@ -47,6 +48,7 @@ export class ClusterService {
       logger.error(err);
       return { error: true, detail: err };
     };
+    if (!data) return { error: true, detail: "Unkown user!" };
 
     const sharedClusters = data.filter((cluster: {shared: boolean}) => cluster.shared);
     
@@ -69,7 +71,9 @@ export class ClusterService {
     if (err) {
       logger.error(err);
       return { error: true, detail: err };
-    }; if (data.cluster) return { error: true, detail: "You already has a cluster!" };
+    }; 
+    if (!data) return { error: true, detail: "Unkown user!" };
+    if (data.cluster) return { error: true, detail: "You already has a cluster!" };
     
     [err, data] = await tryToCatch(async (cluster: Cluster<ObjectId>) => {
       // checifcluster name does exists!
@@ -96,6 +100,7 @@ export class ClusterService {
       logger.error(err);
       return { error: true, detail: err };
     };
+    if (!data) return { error: true, detail: "Unkown user!" };
     
     [err, data] = await tryToCatch((update: Cluster<ObjectId>) => (
       ClusterModel.findOneAndUpdate({_id: data.cluster._id}, {...update}, {new: true})
@@ -113,6 +118,7 @@ export class ClusterService {
       logger.error(err);
       return { error: true, detail: err };
     };
+    if (!data) return { error: true, detail: "Unkown user!" };
     
     [err, data] = await tryToCatch(async (id: string) => {
       await ClusterModel.deleteOne({_id: id});

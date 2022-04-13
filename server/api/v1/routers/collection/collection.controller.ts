@@ -11,6 +11,7 @@ export class CollectionController {
   // Get all my collections
   static async myCollections(req: Request, res: Response) {
     const token: string = req.body.token;
+
     const Collection = new CollectionService(token, null, null);
 
     const data = await Collection.myCollectionsInfo();
@@ -23,7 +24,8 @@ export class CollectionController {
   // Get my collection detail
   static async myCollectionDetail(req: Request, res: Response) {
     const token: string = req.body.token;
-    const collectionId = req.params.id;
+    const collectionId: string = req.params.id;
+
     const Collection = new CollectionService(token, collectionId, null);
 
     const data = await Collection.myCollectionDetailInfo();
@@ -36,7 +38,8 @@ export class CollectionController {
   // Get external collection detail (only shared ones)
   static async collectionDetail(req: Request, res: Response) {
     const token: string = req.body.token;
-    const collectionId = req.params.id;
+    const collectionId: string = req.params.id;
+
     const Collection = new CollectionService(token, collectionId, null);
 
     const data = await Collection.collectionDetailInfo();
@@ -49,7 +52,8 @@ export class CollectionController {
   // save external shared collection into my cluster
   static async shareCollection(req: Request, res: Response) {
     const token: string = req.body.token;
-    const collectionId = req.params.id;
+    const collectionId: string = req.params.id;
+
     const Collection = new CollectionService(token, collectionId, null);
 
     const data = await Collection.shareCollectionInfo();
@@ -63,6 +67,7 @@ export class CollectionController {
   static async createCollection(req: Request, res: Response) {
     const token: string = req.body.token;
     const collectionInfo: Collection<any> = req.body.collectionInfo;
+
     const Collection = new CollectionService(token, null, collectionInfo);
 
     const data = await Collection.createCollectionInfo();
@@ -78,6 +83,7 @@ export class CollectionController {
     const id: string = req.params.id;
     const collectionInfo: Collection<any> = req.body.collectionInfo;    
     if (!collectionInfo.name && !collectionInfo.shared) return res.status(400).json({ error: true, detail: "bad request!" });
+    
     const Collection = new CollectionService(token, id, collectionInfo);
 
     const data = await Collection.updateCollectionInfo();

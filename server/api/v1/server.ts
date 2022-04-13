@@ -28,5 +28,5 @@ if (process.env.NODE_ENV === "production") {
     app.listen(PORT, () => logger.info("Worker run on port:", PORT));
   };
 } else {
-  app.listen(PORT, () => logger.info("server run on development mode on port: "+PORT));
+  app.listen(PORT, () => logger.info("Server run on development mode on port:", PORT));
 };
