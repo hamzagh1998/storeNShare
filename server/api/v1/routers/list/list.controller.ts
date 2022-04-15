@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
-import { ListService } from "../../services/list.service";
-
 import { List } from "../../interfaces/list.interface";
+
+import { ListService } from "../../services/list.service";
 
 
 export class ListController {

@@ -4,6 +4,7 @@ import { ObjectId } from "mongoose"
 import { UserModel } from "../models/user.model";
 import { ClusterModel } from "../models/cluster.model";
 import { CollectionModel } from "../models/collection.model";
+import { ListModel } from "../models/list.model";
 
 import { Collection } from "../interfaces/collection.interface";
 
@@ -50,7 +51,17 @@ export class CollectionService {
       return { error: true, detail: err };
     };  
 
-    [err, data] = await tryToCatch(async (id: string) => CollectionModel.findById(id), this.id);
+    [err, data] = await tryToCatch(async (id: string) => {
+      const lists: Array<object> = [];
+
+      const collectionDoc = await CollectionModel.findById(id).lean();
+      if (collectionDoc.lists.length) {
+        for (const list of collectionDoc.lists) {
+          const listDoc = await ListModel.findById(list);
+          lists.push(listDoc);
+        };return {...collectionDoc, lists: lists};
+      };return collectionDoc;
+    }, this.id);
     if (err) {
       logger.error(err);
       return { error: true, detail: "Not found!" };
@@ -68,8 +79,15 @@ export class CollectionService {
     if (!data) return { error: true, detail: "Unkown user!" };
 
     [err, data] = await tryToCatch(async (id: string) => {
-      const collectionDoc = await CollectionModel.findById(id);
-      return collectionDoc.shared ? collectionDoc : "This collection is private!";
+      const lists: Array<object> = [];
+
+      const collectionDoc = await CollectionModel.findById(id).lean();
+      if (collectionDoc.lists.length) {
+        for (const list of collectionDoc.lists) {
+          const listDoc = await ListModel.findById(list);
+          lists.push(listDoc);
+        };return collectionDoc.shared ? {...collectionDoc, lists: lists} : "This collection is private!";
+      };return collectionDoc.shared ? collectionDoc : "This collection is private!";
     }, this.id);
     if (err) {
       logger.error(err);

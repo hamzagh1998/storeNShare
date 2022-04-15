@@ -1,16 +1,17 @@
-import path from "path";
 import express, { Request, Response } from "express";
+import path from "path";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
 
-import { AuthRouter } from "./routers/auth/auth.router";
-
 import { checkToken } from "./middlewares/check-token"
 import { errorCatcher } from "./middlewares/error-catcher";
+
+import { AuthRouter } from "./routers/auth/auth.router";
 import { ClusterRouter } from "./routers/cluster/cluster.router";
 import { CollectionRouter } from "./routers/collection/collection.router";
 import { ListRouter } from "./routers/list/list.router";
+import { ItemRouter } from "./routers/item/item.router";
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use("/api/v1/auth", AuthRouter);
 app.use("/api/v1/cluster", checkToken, ClusterRouter);
 app.use("/api/v1/collection", checkToken, CollectionRouter);
 app.use("/api/v1/list", checkToken, ListRouter);
+app.use("/api/v1/item", checkToken, ItemRouter);
 
 // custom middleware
 app.use(errorCatcher);

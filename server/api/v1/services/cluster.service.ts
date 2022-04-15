@@ -3,6 +3,7 @@ import { ObjectId } from "mongoose"
 
 import { UserModel } from "../models/user.model";
 import { ClusterModel } from "../models/cluster.model";
+import { CollectionModel } from "../models/collection.model";
 
 import { tryToCatch } from "../utils";
 import { logger } from "../logger";
@@ -33,9 +34,17 @@ export class ClusterService {
     };
     if (!data) return { error: true, detail: "Unkown user!" };
 
-    [err, data] = await tryToCatch((id: string) => (
-      ClusterModel.findById(id)
-    ), data.cluster);
+    [err, data] = await tryToCatch(async (id: string) => {
+      const collections: Array<object> = [];
+
+      const clusterDoc = await ClusterModel.findById(id).lean();
+      if (clusterDoc) {
+        for (const coll of clusterDoc.collections) {
+          const collectionDoc = await CollectionModel.findById(coll).lean();
+          collections.push(collectionDoc);
+        };return {...clusterDoc, collections: collections};
+      };return clusterDoc;
+    }, data.cluster);
     if (err) {
       logger.error(err);
       return { error: true, detail: err };
@@ -56,9 +65,17 @@ export class ClusterService {
   };
 
   async clusterDetailInfo() {
-    const [err, data] = await tryToCatch((id: string) => (
-      ClusterModel.findById(id)
-    ), this.id);
+    const [err, data] = await tryToCatch(async (id: string) => {
+      const collections: Array<object> = [];
+
+      const clusterDoc = await ClusterModel.findById(id).lean();
+      if (clusterDoc) {
+        for (const coll of clusterDoc.collections) {
+          const collectionDoc = await CollectionModel.findById(coll).lean();
+          collectionDoc.shared && collections.push(collectionDoc);
+        };return {...clusterDoc, collections: collections};
+      };return clusterDoc;
+    }, this.id);
     if (err) {
       logger.error(err);
       return { error: true, detail: "Cluster doesn't exists!" };

@@ -5,6 +5,7 @@ import { ListModel } from "../models/list.model";
 import { UserModel } from "../models/user.model";
 import { CollectionModel } from "../models/collection.model";
 import { ClusterModel } from "../models/cluster.model";
+import { ItemModle } from "../models/item.model";
 
 import { List } from "../interfaces/list.interface";
 
@@ -41,13 +42,14 @@ export class ListService {
     [err, data] = await tryToCatch(async (id: string) => {
       const collectionDoc = await CollectionModel.findById(id);
       if (collectionDoc.clusterParent.toString() !== data.cluster.toString()) return "Forbidden";
+
       return ListModel.find({collectionParent: id});
     }, this.collectionId);
     
     if (err) {
       logger.error(err);
       return { error: true, detail: err };
-    };return { error: false, detail: data.length ? data : "Empty!" };
+    };return { error: typeof data === "string", detail: data.length ? data : "Empty!" };
   };
 
   async myListDetailInfo() {
@@ -60,14 +62,25 @@ export class ListService {
     if (!data) return { error: true, detail: "Unkown user!" };
 
     [err, data] = await tryToCatch(async (id: string) => {
+      const items: Array<object> = [];
+
       const collectionDoc = await CollectionModel.findById(this.collectionId);      
       if (collectionDoc.clusterParent.toString() !== data.cluster.toString()) return "Forbidden";
-      return ListModel.findById(id);
+
+      const listDoc = await ListModel.findById(id).lean();
+      if (listDoc.items.length) {
+        for (const item of listDoc.items) {
+          const itemDoc = await ItemModle.findById(item).lean();
+          items.push(itemDoc);
+        };return {...listDoc, items: items};
+      };return listDoc;
+
     }, this.id);
     if (err) {
       logger.error(err);
       return { error: true, detail: "Not found!" };
     };return { error: false, detail: data };
+
   };
 
   async listDetailInfo() {
@@ -80,8 +93,15 @@ export class ListService {
     if (!data) return { error: true, detail: "Unkown user!" };
 
     [err, data] = await tryToCatch(async (id: string) => {
-      const listDoc = await ListModel.findById(id);
-      return listDoc.shared ? listDoc : "This list is private!";
+      const items: Array<object> = [];
+
+      const listDoc = await ListModel.findById(id).lean();
+      if (listDoc.items.length) {
+        for (const item of listDoc.items) {
+          const itemDoc = await ItemModle.findById(item).lean();
+          items.push(itemDoc);
+        };return listDoc.shared ? {...listDoc, items: items} : "This list is private!";
+      };return listDoc.shared ? listDoc : "This list is private!";
     }, this.id);
     if (err) {
       logger.error(err);
