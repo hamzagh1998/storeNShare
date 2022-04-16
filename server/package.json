@@ -19,6 +19,7 @@
     "helmet": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.8",
+    "tcs": "^10.0.2",
     "winston": "^3.6.0"
   },
   "devDependencies": {
