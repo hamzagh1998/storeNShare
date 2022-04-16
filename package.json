@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Productivity app ",
   "main": "index.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "install-server-dep": "npm install --prefix server",
     "build-server": "npm run build --prefix server",
