@@ -2,11 +2,11 @@
   "name": "storenshare-server-side",
   "version": "0.0.1",
   "description": "server side for storenshare ",
-  "main": "server.ts",
+  "main": "server.js",
   "scripts": {
     "watch": "NODE_ENV=development nodemon api/v1/server.ts",
     "start": "NODE_ENV=production node dist/v1/server.js",
-    "build": "tsc -p ."
+    "build": "tsc"
   },
   "author": "hamza ghenimi",
   "license": "ISC",
@@ -19,7 +19,6 @@
     "helmet": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.8",
-    "tcs": "^10.0.2",
     "winston": "^3.6.0"
   },
   "devDependencies": {
@@ -32,7 +31,8 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.7.0",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "tcs": "^10.0.2"
   },
   "engines": {
     "node": "16.x"
