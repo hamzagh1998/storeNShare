@@ -9,6 +9,7 @@
     "start-server": "npm run start --prefix server",
     "install": "npm run install-server-dep",
     "build": "npm run build-server",
+    "heroku-postbuild": "npm run build-server --prod",
     "start": "npm run start-server"
   },
   "author": "hamza ghenimi",
