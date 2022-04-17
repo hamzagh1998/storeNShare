@@ -8,7 +8,7 @@
   },
   "scripts": {
     "install-server-dep": "npm install --prefix server",
-    "build-server": "npm run build --prefix server",
+    "build-server": "npm run tsc --prefix server",
     "start-server": "npm run start --prefix server",
     "install": "npm run install-server-dep",
     "build": "npm run build-server",

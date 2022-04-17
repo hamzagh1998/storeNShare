@@ -6,8 +6,8 @@
   "scripts": {
     "watch": "NODE_ENV=development nodemon api/v1/server.ts",
     "start": "NODE_ENV=production node dist/v1/server.js",
-    "build": "tsc",
-    "postinstall": "npm run build"
+    "tsc": "tsc",
+    "postinstall": "npm run tsc"
   },
   "author": "hamza ghenimi",
   "license": "ISC",
