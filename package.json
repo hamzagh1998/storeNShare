@@ -7,7 +7,7 @@
     "node": "16.x"
   },
   "scripts": {
-    "install-server-dep": "npm install --prefix server",
+    "install-server-dep": "npm install --production=false --prefix server",
     "build-server": "npm run build --prefix server",
     "start-server": "npm run start --prefix server",
     "install": "npm run install-server-dep",
