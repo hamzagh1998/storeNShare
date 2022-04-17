@@ -42,7 +42,6 @@ app.use("/api/v1/item", checkToken, ItemRouter);
 // custom middleware
 app.use(errorCatcher);
 
-app.get("/test", (req: Request, res: Response) => res.send("it's working"));
 app.get("/*", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "index.html"));
 });
