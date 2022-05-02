@@ -63,7 +63,7 @@ export class ListService {
 
     [err, data] = await tryToCatch(async (id: string) => {
       const items: Array<object> = [];
-
+      
       const collectionDoc = await CollectionModel.findById(this.collectionId);      
       if (collectionDoc.clusterParent.toString() !== data.cluster.toString()) return "Forbidden";
 

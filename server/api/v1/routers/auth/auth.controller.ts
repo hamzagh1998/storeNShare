@@ -6,7 +6,7 @@ export class AuthController {
   static async registerController(req: Request, res: Response) {
 
     const { username, email, password } = req.body;
-    const avatar = `https://avatars.dicebear.com/api/identicon/${username}.svg`;
+    const avatar = `https://avatars.dicebear.com/api/identicon/${username}.png`;
     
     const Auth = new AuthService({ username, email, password ,avatar }, null);
     const data = await Auth.register();

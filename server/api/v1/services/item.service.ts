@@ -11,7 +11,6 @@ import { Item } from "../interfaces/item.interface";
 import { tryToCatch } from "../utils";
 import { logger } from "../logger";
 import { ItemModle } from "../models/item.model";
-import { isError } from "util";
 
 export class ItemService {
   private token: string;
@@ -76,9 +75,9 @@ export class ItemService {
       const collectionDoc = await CollectionModel.findById(listDoc.collectionParent);
       if (collectionDoc.clusterParent.toString() !== data.cluster.toString()) return "Forbidden!";
       // check if key already exists
-      const keyDoesExists = await ItemModle.findOne({key: update.key, listParent: listDoc._id});
+      const keyDoesExists = await ItemModle.find({key: update.key, listParent: listDoc._id});
       
-      if (keyDoesExists) return "This key already exists!";
+      if (keyDoesExists.length > 1) return "This key already exists!";
       // update
       itemDoc.key = update.key;
       itemDoc.value = update.value;

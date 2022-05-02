@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "watch": "NODE_ENV=development nodemon api/v1/server.ts",
+    "local": "NODE_ENV=local nodemon api/v1/server.ts",
     "start": "NODE_ENV=production node dist/v1/server.js",
     "build": "tsc",
     "postinstall": "npm run build"
@@ -12,12 +13,14 @@
   "author": "hamza ghenimi",
   "license": "ISC",
   "dependencies": {
+    "@types/ip": "^1.1.0",
     "ajv": "^8.11.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "helmet": "^5.0.2",
+    "ip": "^1.1.5",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.8",
     "winston": "^3.6.0"
@@ -31,8 +34,8 @@
     "@types/node": "^17.0.23",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
+    "tcs": "^10.0.2",
     "ts-node": "^10.7.0",
-    "typescript": "^4.6.3",
-    "tcs": "^10.0.2"
+    "typescript": "^4.6.3"
   }
 }
