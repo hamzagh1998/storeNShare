@@ -50,12 +50,13 @@ export class ListController {
                     : res.status(200).json({ error: false, detail: data.detail });
   };
 
-  // GET
+  // POST
   // save external shared list into my colection
   static async shareList(req: Request, res: Response) {
     const token: string = req.body.token;
     const id: string = req.params.id;
     const collectionId: string = req.body.collectionId;
+    
 
     const List = new ListService(token, id, collectionId, null);
 
