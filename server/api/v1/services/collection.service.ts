@@ -215,6 +215,10 @@ export class CollectionService {
     if (!data) return { error: true, detail: "Unkown user!" };
 
     [err, data] = await tryToCatch(async (id: string) => {
+      const collectionDoc = await CollectionModel.findById(id);
+      collectionDoc.lists.length && collectionDoc.lists.forEach(async (list: any) => {
+        const res = await ListModel.deleteOne({_id: list._id});
+      });
       const res = await CollectionModel.deleteOne({_id: id, clusterParent: data.cluster});
       const clusterDoc = await ClusterModel.findById(data.cluster);
       clusterDoc.collections = clusterDoc.collections.filter((coll: {_id: any}) => coll._id.toString() !== id);

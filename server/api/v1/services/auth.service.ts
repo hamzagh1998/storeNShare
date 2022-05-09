@@ -84,8 +84,8 @@ export class AuthService {
         if (match) {
           const token = jwt.sign({ _id, username, email, avatar, favorites }, process.env.SECRET_KEY!);
           return { error: false, detail: token };
-        } return { error: true, detail: "Invalid password" };
-      } return { error: true, detail: `This ${isEmail ? "email" : "username"} doesn"t exists!` };
+        } return { error: true, detail: "Invalid password" }
+      } return { error: true, detail: `This ${isEmail ? "email" : "username"} doesn't exists!` };
     };
     logger.error(detail);
     return { error: true, detail };

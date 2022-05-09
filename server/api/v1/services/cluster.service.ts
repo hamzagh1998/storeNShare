@@ -138,6 +138,10 @@ export class ClusterService {
     if (!data) return { error: true, detail: "Unkown user!" };
     
     [err, data] = await tryToCatch(async (id: string) => {
+      const clusterDoc = await ClusterModel.findById(id);
+      clusterDoc.collections.length && clusterDoc.collections.forEach(async (collection: any) => {
+        const res = await CollectionModel.deleteOne({_id: collection._id});
+      });
       await ClusterModel.deleteOne({_id: id});
       data.cluster = null;
       data.save();

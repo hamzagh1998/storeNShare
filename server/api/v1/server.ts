@@ -1,5 +1,5 @@
 import cluster, { Cluster, Worker } from "cluster";
-import net from "net"
+import  ip  from "ip";
 import { cpus } from "os";
 import path from "path";
 import dotenv from "dotenv";
@@ -12,12 +12,12 @@ import { spawnWorker } from "./utils";
 
 dotenv.config({ path: path.resolve(__dirname, "./config/.env") });
 
-const PORT: string = process.env.PORT || "5000";
+const PORT: number = Number(process.env.PORT) || 5000;
 const processesNum: number = cpus().length;
 
-process.env.NODE_ENV === "development" 
-  ? connectDB(process.env.MONGO_DEV_URL!)
-  : connectDB(process.env.MONGO_PRO_URL!);  
+process.env.NODE_ENV === "production"
+  ? connectDB(process.env.MONGO_PRO_URL!)
+  : connectDB(process.env.MONGO_DEV_URL!);  
 
 if (process.env.NODE_ENV === "production") {
   if (cluster.isPrimary) {
@@ -25,8 +25,11 @@ if (process.env.NODE_ENV === "production") {
     
     for (let i=0; i<processesNum; i++) spawnWorker<Worker, Cluster>(workers, cluster, i);
   } else {
-    app.listen(PORT, () => logger.info("Worker run on port:", PORT));
+    app.listen(PORT, () => logger.info("Worker run on port: " +PORT));
   };
+} else if (process.env.NODE_ENV === "development" ) {  
+  app.listen(PORT, () => logger.info("Server run on development mode on port: " + PORT));
 } else {
-  app.listen(PORT, () => logger.info("Server run on development mode on port:", PORT));
+  const url = ip.address() + ":" + PORT;
+  app.listen(PORT, ip.address(), () => logger.info("Server run on local mode on: " + url));
 };
