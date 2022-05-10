@@ -38,6 +38,7 @@ export class ClusterService {
       const collections: Array<object> = [];
 
       const clusterDoc = await ClusterModel.findById(id).lean();
+      
       if (clusterDoc) {
         for (const coll of clusterDoc.collections) {
           const collectionDoc = await CollectionModel.findById(coll).lean();

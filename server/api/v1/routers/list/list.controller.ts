@@ -25,7 +25,7 @@ export class ListController {
   // Get my list detail
   static async myListDetail(req: Request, res: Response) {
     const token: string = req.body.token;
-    const collectionId: string = req.body.collectionId;
+    const collectionId: any = req.body.collectionId;
     const id: string = req.params.id;
 
     const List = new ListService(token, id, collectionId, null);
@@ -50,12 +50,13 @@ export class ListController {
                     : res.status(200).json({ error: false, detail: data.detail });
   };
 
-  // GET
+  // POST
   // save external shared list into my colection
   static async shareList(req: Request, res: Response) {
     const token: string = req.body.token;
     const id: string = req.params.id;
     const collectionId: string = req.body.collectionId;
+    
 
     const List = new ListService(token, id, collectionId, null);
 
@@ -69,7 +70,7 @@ export class ListController {
   // Create new list
   static async createList(req: Request, res: Response) {
     const token: string = req.body.token;
-    const listInfo: List<any> = req.body.listInfo
+    const listInfo: List<any> = req.body.listInfo    
 
     const List = new ListService(token, null, null, listInfo);
 

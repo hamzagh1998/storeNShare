@@ -78,11 +78,11 @@ export class AuthService {
                         : await UserModel.findOne({username: usernameOrEmail});
                         
       if (user) {
-        const { _id, username, email, avatar, favorites } = user;
+        const { _id, username, email, avatar, cluster } = user;
         // check passwords matches
         const match = await bcrypt.compare(password, user.password);
         if (match) {
-          const token = jwt.sign({ _id, username, email, avatar, favorites }, process.env.SECRET_KEY!);
+          const token = jwt.sign({ _id, username, email, avatar, cluster }, process.env.SECRET_KEY!);
           return { error: false, detail: token };
         } return { error: true, detail: "Invalid password" }
       } return { error: true, detail: `This ${isEmail ? "email" : "username"} doesn't exists!` };

@@ -85,7 +85,7 @@ export class CollectionService {
       if (collectionDoc.lists.length) {
         for (const list of collectionDoc.lists) {
           const listDoc = await ListModel.findById(list);
-          lists.push(listDoc);
+          listDoc.shared && lists.push(listDoc);
         };return collectionDoc.shared ? {...collectionDoc, lists: lists} : "This collection is private!";
       };return collectionDoc.shared ? collectionDoc : "This collection is private!";
     }, this.id);

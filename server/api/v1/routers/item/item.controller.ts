@@ -36,7 +36,7 @@ export class ItemController {
   static async deleteItem(req: Request, res: Response) {
     const token: string = req.body.token;
     const id: string = req.params.id;
-
+    
     const Item = new ItemService(token, id, null);
 
     const data = await Item.deleteItemInfo();

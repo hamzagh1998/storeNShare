@@ -63,7 +63,7 @@ export class ListService {
 
     [err, data] = await tryToCatch(async (id: string) => {
       const items: Array<object> = [];
-
+      
       const collectionDoc = await CollectionModel.findById(this.collectionId);      
       if (collectionDoc.clusterParent.toString() !== data.cluster.toString()) return "Forbidden";
 
@@ -124,8 +124,8 @@ export class ListService {
       const allListDoc = await ListModel.find({collectionParent: this.collectionId});
       const listDoc = await ListModel.findById(id).lean();
       
-      if (!clusterDoc.collections.includes(this.collectionId))
-        return "Forbidden";
+      // if (!clusterDoc.collections.includes(this.collectionId))
+      //   return "Forbidden";
       if (listDoc.collectionParent.toString() === this.collectionId) 
         return "You already had this list!";
       if (!listDoc.shared) 
@@ -140,9 +140,19 @@ export class ListService {
 
       listData.collectionParent = this.collectionId;
       const newList = new ListModel({...listData});
-      newList.save()
+      newList.items = [];
+      await newList.save();
+      
+      listDoc.items.forEach(async (itemId: string) => {
+        const item: any = await ItemModle.findById(itemId).lean();
+        const { _id, __v, ...itemData } = item;
+        itemData.listParent = newList._id;
 
-      collectionDoc.lists.push(listDoc);
+        const newItem = new ItemModle({...itemData});
+        await newItem.save();
+        const res = await ListModel.updateOne({_id: newList._id}, {$push: {items: newItem}});
+      });
+      collectionDoc.lists.push(newList);
       collectionDoc.save();
 
       return listDoc;
