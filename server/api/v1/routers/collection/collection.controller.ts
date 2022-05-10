@@ -81,7 +81,7 @@ export class CollectionController {
   static async updateCollection(req: Request, res: Response) {
     const token: string = req.body.token;
     const id: string = req.params.id;
-    const collectionInfo: Collection<any> = req.body.collectionInfo;    
+    const collectionInfo: Collection<any> = req.body.collectionInfo;  
     if (!collectionInfo.name && !collectionInfo.shared) return res.status(400).json({ error: true, detail: "bad request!" });
     
     const Collection = new CollectionService(token, id, collectionInfo);

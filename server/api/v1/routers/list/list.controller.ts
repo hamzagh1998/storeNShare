@@ -7,7 +7,7 @@ import { ListService } from "../../services/list.service";
 
 export class ListController {
 
-    // GET
+  // GET
   // Get all my lists
   static async myLists(req: Request, res: Response) {
     const token: string = req.body.token;
