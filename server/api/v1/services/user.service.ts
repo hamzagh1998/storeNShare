@@ -6,6 +6,7 @@ import { UserModel } from "../models/user.model";
 import { logger } from "../logger";
 
 import { tryToCatch } from "../utils";
+import { ClusterModel } from "../models/cluster.model";
 
 export class UserService {
 
@@ -71,10 +72,14 @@ export class UserService {
     };
     if (!data) return { error: true, detail: "Unkown user!" };
 
-    [err, data] = await tryToCatch(async (filter: object) => UserModel.deleteOne(filter), {_id});
+    [err, data] = await tryToCatch(async (filter: object) => {
+      await UserModel.deleteOne(filter);
+      await ClusterModel.deleteOne({_id: data.cluster});
+      
+    }, {_id});
     if (err) {
       logger.error(err);
       return { error: true, detail: err };
-    } return { error: false, detail: "Password updated!"}
+    } return { error: false, detail: "Account deleted!" };
   };
 };

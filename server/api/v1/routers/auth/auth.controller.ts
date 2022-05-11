@@ -7,7 +7,7 @@ export class AuthController {
 
     const { username, email, password } = req.body;
 
-    const avatar = `https://avatars.dicebear.com/api/identicon/${username}.png`;
+    const avatar = `https://avatars.dicebear.com/api/adventurer/${username}.png`;
     
     const Auth = new AuthService({ username, email, password ,avatar }, null);
     const data = await Auth.register();

@@ -137,6 +137,7 @@ export class ClusterService {
       return { error: true, detail: err };
     };
     if (!data) return { error: true, detail: "Unkown user!" };
+    console.log(data);
     
     [err, data] = await tryToCatch(async (id: string) => {
       const clusterDoc = await ClusterModel.findById(id);
@@ -150,6 +151,6 @@ export class ClusterService {
     if (err) {
       logger.error(err);
       return { error: true, detail: err };
-    };return { error: true, detail: "Cluster has been deleted!" };
+    };return { error: false, detail: "Cluster has been deleted!" };
   };
 };
