@@ -66,8 +66,18 @@ a {
 @media screen and (max-device-width: 640px) {
 	.content{
 		display: block;
+    margin-top: 100px;
   }
   .download-box {
     margin: 0;
+  }
+
+  .title {
+    font-size: 32px;
+    margin-bottom: 2px;
+    color: #7f8c8d;
+    position: absolute;
+    top: 3%;
+    left: 25%;
   }
 }
