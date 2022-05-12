@@ -1,0 +1,73 @@
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+body {
+  background-color: #2d3436;
+  color: #dfe6e9;
+}
+
+p {
+  font-size: 22px;
+}
+
+a {
+  text-decoration: none;
+  color: #dfe6e9;
+}
+
+.conatiner {
+  width: 80%;
+  height: 100%;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: 32px;
+  margin-bottom: 2px;
+  color: #7f8c8d;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.download-box {
+  margin-top: 140px;
+}
+
+.download {
+  margin: 20px 0;
+}
+
+.android {
+  display: flex;
+  background-color: #27ae60;
+  width: 250px;
+  height: 50px;
+  padding: 5px;
+  text-align: center;
+  justify-content: space-around;
+  border: 1px solid #1b7943;
+  border-radius: 10px;
+}
+
+.apk {
+  padding-top: 10px;
+}
+
+/* For Mobile Phones Portrait or Landscape View */
+@media screen and (max-device-width: 640px) {
+	.content{
+		display: block;
+  }
+  .download-box {
+    margin: 0;
+  }
+}
